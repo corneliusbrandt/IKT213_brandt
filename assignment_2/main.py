@@ -92,3 +92,5 @@ save_image(hue_shifted(image, np.array([]), 50), 'hue_shifted.png')
 save_image(smoothing(image), 'smoothing.png')
 save_image(rotation(image, 180), 'rotated_180.png')
 save_image(rotation(image, 90), 'rotated_90.png')
+
+
