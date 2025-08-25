@@ -62,6 +62,10 @@ def save_image(image, filename : str, target_dir = "assignment_2/results"):
     cv.imwrite(save_path, image)
 
 
+
+#--------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------
+#Show all images. Press 0 to close them all
 cv.imshow('image', image)
 cv.imshow('padded', padding(image, 100))
 cv.imshow('cropped', crop(image, 79, 469, 79, 469))
@@ -77,6 +81,7 @@ print("Press 0 to close all pictures")
 cv.waitKey(0)
 cv.destroyAllWindows()
 
+#Save images to results folder
 save_image(padding(image, 100), 'padded.png')
 save_image(crop(image, 79, 469, 79, 469), 'cropped.png')
 save_image(resize(image, 200, 200), 'resized.png')
