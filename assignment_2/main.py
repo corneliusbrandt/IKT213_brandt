@@ -35,12 +35,14 @@ def hsv(image):
     return hsv
 
 def hue_shifted(image, emptyPictureArray, hue):
-    height = image.shape[0]
-    width = image.shape[1]
-    channels = image.shape[2]
+    height, width, channels = image.shape
     emptyPictureArray = np.zeros((height, width, channels), dtype=np.uint8)
-    emptyPictureArray[:] = image[:]
-    emptyPictureArray += hue
+    
+    
+    shifted = image.astype(np.int16) + hue  
+    shifted = np.clip(shifted, 0, 255)      
+    
+    emptyPictureArray[:] = shifted.astype(np.uint8)
     return emptyPictureArray
 
 def smoothing(image):
