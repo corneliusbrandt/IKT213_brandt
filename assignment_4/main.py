@@ -58,11 +58,10 @@ def image_alignment(image_to_align, reference_image, max_features, good_match_pe
         M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
         matchesMask = mask.ravel().tolist()
 
+        M_warp = np.linalg.inv(M)
         h, w = gray_reference_image.shape
-        pts = np.float32([[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]).reshape(-1, 1, 2)
-        dst = cv2.perspectiveTransform(pts, M)
-
-        gray_image_to_align = cv2.polylines(gray_image_to_align, [np.int32(dst)], True, 255, 3, cv2.LINE_AA)
+        aligned = cv2.warpPerspective(image_to_align, M_warp, (w, h))
+       
     else:
         print("Not enough matches are found - {}/{}".format(len(good_matches), MIN_MATCH_COUNT))
         matchesMask = None
@@ -74,12 +73,12 @@ def image_alignment(image_to_align, reference_image, max_features, good_match_pe
 
     img_matches = cv2.drawMatches(gray_reference_image, kp1, gray_image_to_align, kp2, good_matches, None, **draw_params)
 
-    cv2.imwrite('assignment_4/results/aligned.png', gray_image_to_align)
+    cv2.imwrite('assignment_4/results/aligned.png', aligned)
     cv2.imwrite('assignment_4/results/matches.png', img_matches)
     plt.figure(figsize=(20, 10))
     plt.subplot(1, 2, 1)
     plt.title('Aligned Image')
-    plt.imshow(cv2.cvtColor(gray_image_to_align, cv2.COLOR_GRAY2RGB))
+    plt.imshow(cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB))
     plt.axis('off')
 
     plt.subplot(1, 2, 2)
